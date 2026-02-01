@@ -152,7 +152,7 @@ scale = Vector2(0.865, 0.865)
 texture = ExtResource("2_g2els")
 
 [node name="Cube_002" type="MeshInstance3D" parent="head/Camera3D"]
-transform = Transform3D(0.015, 0, 0, 0, 0.017, 0, 0, 0, 0.016, 0, 2.8317697, 0.0490593)
+transform = Transform3D(0.015, 0, 0, 0, 0.017, 0, 0, 0, 0.016, 0.3010828, -0.34416193, -0.72131246)
 mesh = SubResource("ArrayMesh_g2els")
 skeleton = NodePath("")
 
