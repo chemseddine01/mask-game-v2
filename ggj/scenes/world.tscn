@@ -1,64 +1,52 @@
-[gd_scene format=3 uid="uid://brersgn1wdyo7"]
+[gd_scene load_steps=3 format=3 uid="uid://brersgn1wdyo7"]
 
-[ext_resource type="Texture2D" uid="uid://c4j5pxsccge0y" path="res://floor_texture.png" id="1_rwgxs"]
-[ext_resource type="PackedScene" uid="uid://co0kxnd7cf0jd" path="res://scenes/player.tscn" id="2_4wyf3"]
-[ext_resource type="PackedScene" uid="uid://dyclkrluge1mn" path="res://scenes/enemy.tscn" id="3_4wyf3"]
-[ext_resource type="PackedScene" uid="uid://b0vweaph64yog" path="res://scenes/radom_spawning.tscn" id="4_k0juu"]
+[ext_resource type="Script" uid="uid://bv37qytmlb43a" path="res://scripts/taking a random_spawning point.gd" id="1_rwgxs"]
+[ext_resource type="PackedScene" uid="uid://basbiqrev505v" path="res://scenes/spawner.tscn" id="2_4wyf3"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rwgxs"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+[node name="radom_spawning" type="Node3D"]
+script = ExtResource("1_rwgxs")
 
-[sub_resource type="Sky" id="Sky_4wyf3"]
-sky_material = SubResource("ProceduralSkyMaterial_rwgxs")
+[node name="spawner" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -33.7794)
 
-[sub_resource type="Environment" id="Environment_k0juu"]
-background_mode = 2
-sky = SubResource("Sky_4wyf3")
-tonemap_mode = 2
-glow_enabled = true
+[node name="spawner2" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.88389, 0, -34.235714)
 
-[sub_resource type="NavigationMesh" id="NavigationMesh_k0juu"]
-vertices = PackedVector3Array(-49.5, 1, -49.5, -49.5, 1, 49.5, 49.5, 1, 49.5, 49.5, 1, -49.5)
-polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+[node name="spawner3" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.65625, 0, -17.71189)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k0juu"]
-albedo_color = Color(1.0107458e-06, 0.5313994, 1.0588765e-06, 1)
-albedo_texture = ExtResource("1_rwgxs")
-uv1_scale = Vector3(68.635, 50, 1)
+[node name="spawner4" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.154655, 0, -2.2314053)
 
-[sub_resource type="BoxMesh" id="BoxMesh_e5uuo"]
-size = Vector3(100, 1, 100)
+[node name="spawner5" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.827076, 0, 12.856468)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_nnsk1"]
-size = Vector3(100, 1, 100)
+[node name="spawner6" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.590218, 0, 30.91021)
 
-[node name="world" type="Node3D" unique_id=275841641]
+[node name="spawner7" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.36727142, 0, 42.86866)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=713751525]
-environment = SubResource("Environment_k0juu")
+[node name="spawner8" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.35957, 0, 39.909477)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=703412755]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
-shadow_enabled = true
+[node name="spawner9" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.286945, 0, 31.389381)
 
-[node name="player" parent="." unique_id=1284077900 instance=ExtResource("2_4wyf3")]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.71502, 0)
+[node name="spawner10" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.96445, 0, 1.440033)
 
-[node name="radom_spawning" parent="player" unique_id=1610501494 instance=ExtResource("4_k0juu")]
+[node name="spawner11" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45.96445, 0, -15.25079)
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." unique_id=754820203]
-navigation_mesh = SubResource("NavigationMesh_k0juu")
+[node name="spawner12" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.645473, 0, -35.521557)
 
-[node name="floor" type="StaticBody3D" parent="NavigationRegion3D" unique_id=1935778419]
+[node name="spawner13" parent="." instance=ExtResource("2_4wyf3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.328388, 0, -45.925327)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/floor" unique_id=1470200589]
-material_override = SubResource("StandardMaterial3D_k0juu")
-mesh = SubResource("BoxMesh_e5uuo")
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/floor" unique_id=598031195]
-shape = SubResource("BoxShape3D_nnsk1")
-
-[node name="enemy" parent="." unique_id=1897052815 instance=ExtResource("3_4wyf3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.743114, 2.1368043, 0)
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

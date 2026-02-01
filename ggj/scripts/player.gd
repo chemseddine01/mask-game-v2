@@ -6,12 +6,9 @@ extends CharacterBody3D
 @export var jump_velocity: float = 4.5
 @export var mouse_sensitivity: float = 0.1
 
-
-
-
 # scenes
 var lose_scene = ("res://scenes/lose_scene.tscn")
-var arrow_scene = preload("res://scenes/arrow.tscn")
+
 # animation players
 @onready var animation_player: AnimationPlayer = $head/Camera3D/AnimationPlayer
 
@@ -47,8 +44,6 @@ var double_jump = 1
 var current_speed: float = walk_speed
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-var launch = false
-	
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -60,14 +55,6 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
 func _physics_process(delta):
-	
-	if launch == true:
-		Game.arrow.position.z -=3
-		
-	else:
-		pass
-		
-		
 	if Game.player_health == 0:
 #		get_tree().change_scene_to_file(lose_scene)
 		pass
@@ -84,27 +71,11 @@ func _physics_process(delta):
 	first_world()
 # يصفر مكانه جوه الإيد
 	
-	
 	# القفز
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
-	
-		
 	if Input.is_action_pressed("shift") and Input.is_action_pressed("forward"):
 		animation_player.play("Move")
-		
-	elif Input.is_action_pressed("Aim"):
-		animation_player.play("Aim")
-		if Input.is_action_just_pressed("shoot"):
-			launch = true
-			$Range.start()
-			print("shooot")
-			
-			
-	else:
-		animation_player.play("Idle")
-		
-	
 	
 	
 	# الجري
@@ -128,7 +99,7 @@ func _physics_process(delta):
 		velocity.x = lerp(velocity.x, direction.x * current_speed, delta * 3.0)
 		velocity.z = lerp(velocity.z, direction.z * current_speed, delta * 3.0)
 
-	
+
 	# تطبيق تأثير Head Bobbing
 	_apply_head_bob(delta)
 	
@@ -157,7 +128,7 @@ func _apply_head_bob(delta):
 	if is_on_floor() or is_on_wall() and velocity.length() > 0.5:
 		
 		bob_time += delta * velocity.length() * float(is_on_floor() or is_on_wall())
-	
+		
 		
 		var bob_offset = Vector3(
 			cos(bob_time * bob_frequency / 2) * bob_amplitude,
@@ -205,10 +176,13 @@ func _update_fov(delta):
 
 
 func shoot():
-	var arrow_instance = arrow_scene.instantiate()
-	arrow_instance.position = ray.global_position
-	arrow_instance.transform.basis = ray.global_transform.basis
-	get_parent().add_child(arrow_instance)
+	if ray.is_colliding():
+		var target = ray.get_collider()
+		if target != null:
+			if target.is_in_group("casual_enemy") and target.has_method("casual_enemy_hit"):
+				target.casual_enemy_hit(damage)
+			elif target.has_method("first_world_enemy_hit"):
+				target.first_world_enemy_hit(damage)
 	#animation_player.play("Reload")
 
 func first_world():
@@ -217,11 +191,7 @@ func first_world():
 		if target != null:
 			if target.has_method("visibility"):
 				target.visibility(Game.first_mask)
-	if Game.kills >= 20:
+	if Game.kills >= 2:
 		Game.first_mask = true
-	if Game.kills >= 20:
+	if Game.kills >= 2:
 		damage = 16
-
-
-func _on_range_timeout() -> void:
-	launch = false
