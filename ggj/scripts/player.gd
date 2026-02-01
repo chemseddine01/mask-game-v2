@@ -175,3 +175,5 @@ func first_world():
 	if Game.kills >= 2:
 		Game.first_mask = true
 		print("now you can see the enemys")
+	if Game.kills >= 20:
+		damage = 10

@@ -9,5 +9,5 @@ func add_kill():
 	print("kills :", kills)
 
 func first_world():
-	if kills >= 2:
-		first_mask = true 
+	if kills >= 20:
+		first_mask = true
