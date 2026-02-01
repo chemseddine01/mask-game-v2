@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyclkrluge1mn"]
+[gd_scene load_steps=7 format=3 uid="uid://dyclkrluge1mn"]
 
 [ext_resource type="Script" uid="uid://c6oa5xwa8j24d" path="res://scripts/enemy.gd" id="1_7p1mj"]
 
@@ -10,7 +10,10 @@ albedo_color = Color(0.3749616, 0.28067768, 1, 1)
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_trfny"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_7p1mj"]
-radius = 28.078289
+radius = 10.697862
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_md0e3"]
+radius = 1.862761
 
 [node name="enemy" type="CharacterBody3D" groups=["casual_enemy"]]
 script = ExtResource("1_7p1mj")
@@ -22,7 +25,7 @@ mesh = SubResource("CapsuleMesh_euvdr")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_trfny")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="randome_movement_timer" type="Timer" parent="."]
 autostart = true
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
@@ -32,7 +35,22 @@ autostart = true
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_7p1mj")
 
-[node name="Timer2" type="Timer" parent="."]
+[node name="path_making_timer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="Area3D2" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+shape = SubResource("SphereShape3D_md0e3")
+
+[node name="reload_timer" type="Timer" parent="Area3D2"]
+wait_time = 0.5
+autostart = true
+
+[connection signal="timeout" from="randome_movement_timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="path_making_timer" to="." method="_on_timer_2_timeout"]
+[connection signal="body_entered" from="Area3D2" to="." method="_on_area_3d_2_body_entered"]
+[connection signal="body_exited" from="Area3D2" to="." method="_on_area_3d_2_body_exited"]
+[connection signal="timeout" from="Area3D2/reload_timer" to="." method="_on_reload_timer_timeout"]

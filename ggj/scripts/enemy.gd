@@ -1,56 +1,74 @@
 extends CharacterBody3D
 
-@onready var navigation_agent_3d: NavigationAgent3D = $NavigationAgent3D
+@onready var navigation_agent: NavigationAgent3D = $NavigationAgent3D
 @onready var player: CharacterBody3D = %player
 
 
-
+var enemy_damage = 10
 var health = 100
-var gravity = 9
-var speed = 1
-var dir
-var player_entered = false
+var gravity = 20
+var speed = 2
 
-func _physics_process(_delta: float) -> void:
-	if player_entered == false:
-		if not is_on_floor():
-			velocity.y -= gravity
-			pass
-		if dir == 1:
-			velocity.x = speed
-		if dir == 2:
-			velocity.x = -speed
-		if dir == 3:
-			velocity.z = speed
-		if dir == 4:
-			velocity.z = -speed
-		if dir == 5:
-			velocity.x = speed
-			velocity.z = speed
-		if dir == 6:
-			velocity.x = -speed
-			velocity.z = -speed
-		if dir == 7:
-			velocity.x = speed
-			velocity.z = -speed
-		if dir == 8:
-			velocity.x = -speed
-			velocity.z = speed
-		if dir == 9:
-			velocity.x = 0
-			velocity.z = 0
-	elif player_entered == true:
-		dir = to_local(navigation_agent_3d.get_next_path_position()).normalized()
-		velocity = dir * speed
+
+var wander_dir: int = 9
+var move_dir: Vector3 = Vector3.ZERO
+var player_entered = false
+var is_hiting_enemy = false
+
+func _physics_process(delta: float) -> void:
+	if is_hiting_enemy == true:
+		Game.damage_player()
+		print("player health -10")
+	# gravity
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+
+	velocity.x = 0
+	velocity.z = 0
+
+	if not player_entered:
+		wander()
+	else:
+		chase_player()
+
 	move_and_slide()
 
+
+func wander():
+	match wander_dir:
+		1: velocity.x = speed
+		2: velocity.x = -speed
+		3: velocity.z = speed
+		4: velocity.z = -speed
+		5: velocity = Vector3(speed, velocity.y, speed)
+		6: velocity = Vector3(-speed, velocity.y, -speed)
+		7: velocity = Vector3(speed, velocity.y, -speed)
+		8: velocity = Vector3(-speed, velocity.y, speed)
+		9: pass
+
+
+
+
+func chase_player():
+	if navigation_agent.is_navigation_finished():
+		return
+
+	var next_pos = navigation_agent.get_next_path_position()
+	move_dir = (next_pos - global_position).normalized()
+	velocity.x = move_dir.x * speed
+	velocity.z = move_dir.z * speed
+	
+
+
 func make_path():
-	navigation_agent_3d.target_position = player.global_position
+	if player:
+		navigation_agent.target_position = player.global_position
 
 
 func _on_timer_timeout() -> void:
-	dir = randi_range(0,9)
-	print(health)
+	wander_dir = randi_range(1, 9)
+#	print("Health:", health)
+
 
 func casual_enemy_hit(damage):
 	health -= damage
@@ -62,6 +80,22 @@ func casual_enemy_hit(damage):
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		player_entered = true
-	else :
+		make_path()
+	else:
 		player_entered = false
-	pass # Replace with function body.
+
+func _on_timer_2_timeout() -> void:
+	if player_entered:
+		make_path()
+
+func _on_area_3d_2_body_entered(body: Node3D) -> void:
+	if body.is_in_group("player") and body != null:
+		is_hiting_enemy = true
+	
+#		print("im damaging the enemy")
+#		Game.damage_player()
+
+
+func _on_area_3d_2_body_exited(body: Node3D) -> void:
+	if body.is_in_group("player") and body != null:
+		is_hiting_enemy = false

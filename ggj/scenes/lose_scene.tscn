@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://bywp7cyblyv4x"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_r7mh8"]
+font_size = 111
+
+[node name="lose_scene" type="Node2D"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 328.0
+offset_top = 206.0
+offset_right = 772.0
+offset_bottom = 358.0
+text = "you lose"
+label_settings = SubResource("LabelSettings_r7mh8")

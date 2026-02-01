@@ -6,6 +6,13 @@ extends CharacterBody3D
 @export var jump_velocity: float = 4.5
 @export var mouse_sensitivity: float = 0.1
 
+# scenes
+var lose_scene = ("res://scenes/lose_scene.tscn")
+
+# animation players
+@onready var animation_player: AnimationPlayer = $head/Camera3D/AnimationPlayer
+
+
 
 ## إعدادات Head Bobbing
 @export var bob_frequency: float = 2.0        # تردد الاهتزاز
@@ -48,6 +55,9 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
 func _physics_process(delta):
+	if Game.player_health == 0:
+#		get_tree().change_scene_to_file(lose_scene)
+		pass
 	$CanvasLayer/Control/Label2.text = "walk_speed "+ str(sprint_speed) 
 	# الجاذبية
 	if not is_on_floor():
@@ -55,6 +65,7 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
+		animation_player.play("Fire")
 	first_world()
 # يصفر مكانه جوه الإيد
 	
@@ -165,6 +176,7 @@ func shoot():
 				target.casual_enemy_hit(damage)
 			elif target.has_method("first_world_enemy_hit"):
 				target.first_world_enemy_hit(damage)
+	#animation_player.play("Reload")
 
 func first_world():
 	if ray.is_colliding():
@@ -174,6 +186,5 @@ func first_world():
 				target.visibility(Game.first_mask)
 	if Game.kills >= 2:
 		Game.first_mask = true
-		print("now you can see the enemys")
-	if Game.kills >= 20:
-		damage = 10
+	if Game.kills >= 2:
+		damage = 16

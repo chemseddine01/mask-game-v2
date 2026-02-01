@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cliyc1xvho5xb"]
+[gd_scene load_steps=6 format=3 uid="uid://cliyc1xvho5xb"]
 
 [ext_resource type="Script" uid="uid://ywc0v2cakakh" path="res://scripts/second_world_enemy.gd" id="1_e8kp2"]
 
@@ -9,8 +9,10 @@ albedo_color = Color(1, 0.28264424, 0.35497022, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_snrl6"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_e8kp2"]
+radius = 45.03024
+
 [node name="second_world_enemy" type="CharacterBody3D" groups=["seconde_world_enemy"]]
-visible = false
 script = ExtResource("1_e8kp2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -26,4 +28,14 @@ autostart = true
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_e8kp2")
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
