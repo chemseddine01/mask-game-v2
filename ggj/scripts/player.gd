@@ -63,7 +63,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
-	if Input.is_action_just_pressed("shoot") and not animation_player.is_playing():
+	if Input.is_action_just_pressed("shoot"):
 		shoot()
 		animation_player.play("Fire")
 	if not Input.is_anything_pressed():
@@ -76,6 +76,7 @@ func _physics_process(delta):
 		velocity.y = jump_velocity
 	if Input.is_action_pressed("shift") and Input.is_action_pressed("forward"):
 		animation_player.play("Move")
+	
 	
 	# الجري
 	current_speed = sprint_speed if Input.is_action_pressed("shift") else walk_speed
