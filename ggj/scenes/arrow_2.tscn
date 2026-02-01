@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bh3myfwg8xrd"]
+
+[ext_resource type="PackedScene" uid="uid://coi3llque4vx7" path="res://assets/Arrow.glb" id="1_6kuvo"]
+
+[node name="Arrow2" instance=ExtResource("1_6kuvo")]
+
+[node name="Arrow" parent="." index="0"]
+transform = Transform3D(0.04621046, 0, 0, 0, 0, 0.04621046, 0, -1.3868653, 0, 0, 0, 0)

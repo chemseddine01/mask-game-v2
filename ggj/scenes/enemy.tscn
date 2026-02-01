@@ -15,7 +15,7 @@ radius = 10.697862
 [sub_resource type="SphereShape3D" id="SphereShape3D_md0e3"]
 radius = 1.862761
 
-[node name="enemy" type="CharacterBody3D" groups=["casual_enemy"]]
+[node name="enemy" type="CharacterBody3D" groups=["casual_enemy", "enemy"]]
 script = ExtResource("1_7p1mj")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

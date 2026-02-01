@@ -5,6 +5,8 @@ var first_mask = false
 var enemy_damage = 10
 var reloading = false
 var player_health = 50
+var player_damage = 10
+var arrow_colliding :bool
 
 
 func add_kill():

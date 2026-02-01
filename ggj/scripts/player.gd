@@ -6,9 +6,12 @@ extends CharacterBody3D
 @export var jump_velocity: float = 4.5
 @export var mouse_sensitivity: float = 0.1
 
+
+
+
 # scenes
 var lose_scene = ("res://scenes/lose_scene.tscn")
-
+var arrow_scene = preload("res://scenes/arrow.tscn")
 # animation players
 @onready var animation_player: AnimationPlayer = $head/Camera3D/AnimationPlayer
 
@@ -128,7 +131,7 @@ func _apply_head_bob(delta):
 	if is_on_floor() or is_on_wall() and velocity.length() > 0.5:
 		
 		bob_time += delta * velocity.length() * float(is_on_floor() or is_on_wall())
-		
+	
 		
 		var bob_offset = Vector3(
 			cos(bob_time * bob_frequency / 2) * bob_amplitude,
@@ -176,13 +179,10 @@ func _update_fov(delta):
 
 
 func shoot():
-	if ray.is_colliding():
-		var target = ray.get_collider()
-		if target != null:
-			if target.is_in_group("casual_enemy") and target.has_method("casual_enemy_hit"):
-				target.casual_enemy_hit(damage)
-			elif target.has_method("first_world_enemy_hit"):
-				target.first_world_enemy_hit(damage)
+	var arrow_instance = arrow_scene.instantiate()
+	arrow_instance.position = ray.global_position
+	arrow_instance.transform.basis = ray.global_transform.basis
+	get_parent().add_child(arrow_instance)
 	#animation_player.play("Reload")
 
 func first_world():
@@ -191,7 +191,7 @@ func first_world():
 		if target != null:
 			if target.has_method("visibility"):
 				target.visibility(Game.first_mask)
-	if Game.kills >= 2:
+	if Game.kills >= 20:
 		Game.first_mask = true
-	if Game.kills >= 2:
+	if Game.kills >= 20:
 		damage = 16

@@ -12,7 +12,7 @@ albedo_color = Color(1, 0.28264424, 0.35497022, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_e8kp2"]
 radius = 45.03024
 
-[node name="second_world_enemy" type="CharacterBody3D" groups=["seconde_world_enemy"]]
+[node name="second_world_enemy" type="CharacterBody3D" groups=["enemy", "seconde_world_enemy"]]
 script = ExtResource("1_e8kp2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

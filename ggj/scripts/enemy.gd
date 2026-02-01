@@ -4,6 +4,7 @@ extends CharacterBody3D
 @onready var player: CharacterBody3D = %player
 
 
+
 var enemy_damage = 10
 var health = 100
 var gravity = 20
@@ -22,7 +23,7 @@ func _physics_process(delta: float) -> void:
 	# gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-
+	casual_enemy_hit()
 	velocity.x = 0
 	velocity.z = 0
 
@@ -70,11 +71,13 @@ func _on_timer_timeout() -> void:
 #	print("Health:", health)
 
 
-func casual_enemy_hit(damage):
-	health -= damage
+func casual_enemy_hit():
+	if Game.arrow_colliding == true:
+		health -= Game.player_damage
+		print("enemy_damaged")
 	if health <= 0:
-		Game.add_kill()
 		queue_free()
+		
 
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
