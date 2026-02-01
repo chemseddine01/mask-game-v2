@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://cliyc1xvho5xb"]
+
+[ext_resource type="Script" uid="uid://ywc0v2cakakh" path="res://scripts/second_world_enemy.gd" id="1_e8kp2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b2ra5"]
+albedo_color = Color(1, 0.28264424, 0.35497022, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_h4lex"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_snrl6"]
+
+[node name="second_world_enemy" type="CharacterBody3D" groups=["seconde_world_enemy"]]
+visible = false
+script = ExtResource("1_e8kp2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_b2ra5")
+mesh = SubResource("CapsuleMesh_h4lex")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_snrl6")
+disabled = true
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

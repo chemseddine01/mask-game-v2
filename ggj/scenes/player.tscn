@@ -1,0 +1,75 @@
+[gd_scene load_steps=7 format=3 uid="uid://co0kxnd7cf0jd"]
+
+[ext_resource type="Script" uid="uid://b3rgimylxwpx6" path="res://scripts/player.gd" id="1_3vyb7"]
+[ext_resource type="Texture2D" uid="uid://gvmcnys2ihwb" path="res://crosshair.png" id="2_g2els"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_u8vuu"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vyb7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_3vyb7"]
+size = Vector3(0.05, 0.425, 0.44)
+
+[sub_resource type="GDScript" id="GDScript_oul6g"]
+script/source = "extends Control
+
+
+func _process(_delta: float) -> void:
+	$Label.text = \"FPS \"  + str(Engine.get_frames_per_second())
+"
+
+[node name="player" type="CharacterBody3D" groups=["player"]]
+script = ExtResource("1_3vyb7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_u8vuu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_3vyb7")
+
+[node name="head" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6114983, 0)
+
+[node name="gun" type="MeshInstance3D" parent="head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.653, -0.485, -0.666)
+mesh = SubResource("BoxMesh_3vyb7")
+
+[node name="RayCast3D" type="RayCast3D" parent="head/Camera3D"]
+target_position = Vector3(0, 0, -24.975)
+
+[node name="Crosshair" type="Sprite2D" parent="head/Camera3D"]
+position = Vector2(576, 324)
+scale = Vector2(0.865, 0.865)
+texture = ExtResource("2_g2els")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = SubResource("GDScript_oul6g")
+
+[node name="Label" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 19.0
+offset_right = 73.0
+offset_bottom = 42.0
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 55.0
+offset_right = 72.0
+offset_bottom = 78.0
+
+[node name="Label3" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = 33.0
+offset_top = 89.0
+offset_right = 73.0
+offset_bottom = 112.0
