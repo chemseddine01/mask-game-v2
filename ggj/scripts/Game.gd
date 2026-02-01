@@ -1,5 +1,7 @@
 extends Node
 
+@onready var arrow =$head/Camera3D/Cube_002/Arrow
+
 var kills = 0
 var first_mask = false
 var enemy_damage = 10
