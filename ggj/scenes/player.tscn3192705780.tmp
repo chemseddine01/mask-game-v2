@@ -179,49 +179,6 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_2swpa")
 
-[sub_resource type="Animation" id="Animation_g2els"]
-resource_name = "Aim"
-length = 1.9583334
-loop_mode = 2
-tracks/0/type = "position_3d"
-tracks/0/imported = true
-tracks/0/enabled = true
-tracks/0/path = NodePath("Cube_002")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array()
-tracks/1/type = "rotation_3d"
-tracks/1/imported = true
-tracks/1/enabled = true
-tracks/1/path = NodePath("Cube_002")
-tracks/1/interp = 0
-tracks/1/loop_wrap = true
-tracks/1/keys = PackedFloat32Array()
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Cube_002:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.39999998),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.521, -0.316, -0.688), Vector3(0.09099239, -0.316, -0.688)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Cube_002:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_lfu5u"]
 resource_name = "Fire"
 length = 0.75
@@ -384,7 +341,6 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_6sokt"]
 _data = {
-&"Aim": SubResource("Animation_g2els"),
 &"Fire": SubResource("Animation_lfu5u"),
 &"Idle": SubResource("Animation_3yq4d"),
 &"Move": SubResource("Animation_152f7"),
@@ -399,6 +355,26 @@ script/source = "extends Control
 func _process(_delta: float) -> void:
 	$Label.text = \"FPS \"  + str(Engine.get_frames_per_second())
 "
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_g2els"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qhqgy"]
+animation = &"Move"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_dqkch"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_g2els")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_qhqgy")
+blend_point_1/pos = 1.0
+min_space = 0.0
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_qlg0r"]
+graph_offset = Vector2(-19.472748, 71.80782)
+nodes/output/position = Vector2(440, 160)
+nodes/BlendSpace1D/node = SubResource("AnimationNodeBlendSpace1D_dqkch")
+nodes/BlendSpace1D/position = Vector2(170, 110)
+node_connections = [&"output", 0, &"BlendSpace1D"]
 
 [node name="player" type="CharacterBody3D" unique_id=1707190907 groups=["player"]]
 script = ExtResource("1_3vyb7")
@@ -434,6 +410,7 @@ skeleton = NodePath("")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="head/Camera3D" unique_id=1240133564]
 libraries/ = SubResource("AnimationLibrary_6sokt")
+blend_times = [&"Idle", &"Idle", 0.5, &"Idle", &"Move", 0.5]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=822153509]
 
@@ -465,7 +442,8 @@ offset_top = 89.0
 offset_right = 73.0
 offset_bottom = 112.0
 
-[node name="Range" type="Timer" parent="." unique_id=429527614]
-wait_time = 5.0
-
-[connection signal="timeout" from="Range" to="." method="_on_range_timeout"]
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=966233396]
+root_node = NodePath("../head/Camera3D")
+tree_root = SubResource("AnimationNodeBlendTree_qlg0r")
+anim_player = NodePath("../head/Camera3D/AnimationPlayer")
+parameters/BlendSpace1D/blend_position = 0.0

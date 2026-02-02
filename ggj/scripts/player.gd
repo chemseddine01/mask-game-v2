@@ -44,6 +44,8 @@ var double_jump = 1
 var current_speed: float = walk_speed
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+var launch = false
+	
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -55,6 +57,14 @@ func _unhandled_input(event):
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-89), deg_to_rad(89))
 
 func _physics_process(delta):
+	
+	if launch == true:
+		Game.arrow.position.z -=3
+		
+	else:
+		pass
+		
+		
 	if Game.player_health == 0:
 #		get_tree().change_scene_to_file(lose_scene)
 		pass
@@ -71,11 +81,27 @@ func _physics_process(delta):
 	first_world()
 # يصفر مكانه جوه الإيد
 	
+	
 	# القفز
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
+	
+		
 	if Input.is_action_pressed("shift") and Input.is_action_pressed("forward"):
 		animation_player.play("Move")
+		
+	elif Input.is_action_pressed("Aim"):
+		animation_player.play("Aim")
+		if Input.is_action_just_pressed("shoot"):
+			launch = true
+			$Range.start()
+			print("shooot")
+			
+			
+	else:
+		animation_player.play("Idle")
+		
+	
 	
 	# الجري
 	current_speed = sprint_speed if Input.is_action_pressed("shift") else walk_speed
@@ -98,7 +124,7 @@ func _physics_process(delta):
 		velocity.x = lerp(velocity.x, direction.x * current_speed, delta * 3.0)
 		velocity.z = lerp(velocity.z, direction.z * current_speed, delta * 3.0)
 
-
+	
 	# تطبيق تأثير Head Bobbing
 	_apply_head_bob(delta)
 	
@@ -194,3 +220,7 @@ func first_world():
 		Game.first_mask = true
 	if Game.kills >= 2:
 		damage = 16
+
+
+func _on_range_timeout() -> void:
+	launch = false
