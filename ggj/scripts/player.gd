@@ -73,7 +73,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
-	if Input.is_action_just_pressed("shoot") and not animation_player.is_playing():
+	if Input.is_action_just_pressed("shoot"):
 		shoot()
 		animation_player.play("Fire")
 	if not Input.is_anything_pressed():
@@ -101,6 +101,7 @@ func _physics_process(delta):
 	else:
 		animation_player.play("Idle")
 		
+	
 	
 	
 	# الجري
